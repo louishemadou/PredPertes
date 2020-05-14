@@ -1,22 +1,8 @@
 import numpy as np
 from numpy.linalg import eigh
+from split import retrieve_and_split
 import matplotlib.pyplot as plt
 import pandas as pd
-
-# Retrieving and shuffling data
-
-X = pd.read_csv("./data/conso/conso_2016.csv").to_numpy()
-Y = pd.read_csv("./data/pertes/pertes_2016.csv").to_numpy()[:, -1]
-r = np.random.permutation(len(X))
-
-X_train = X[r[0:6000], :]
-Y_train = Y[r[0:6000]]
-X_val = X[r[6000:7500], :]
-Y_val = Y[r[6000:7500]]
-X_test = X[r[7500:], :]
-Y_test = Y[r[7500:]]
-
-# Data preprocessing
 
 def standardize(X):
     eps = 1e-8 # In case where std = 0
@@ -27,9 +13,6 @@ def normalize(X):
     eps = 1e-8 # In case where max = min
     X_n = (X-np.min(X, axis=0))/(np.max(X, axis = 0)-np.min(X, axis=0)+eps)
     return X_n
-
-X_t = standardize(X_train)
-print(str(X_t.shape[1]) + " features")
 
 def pca(X, n_comp, whitening = True, visual = False):
 
@@ -62,8 +45,3 @@ def pca(X, n_comp, whitening = True, visual = False):
         X_pca = np.dot(X_pca, np.diag(eig_values[0:n_comp]**(-1/2)))
 
     return X_pca
-
-X_t = standardize(X_train)
-n_comp = 20
-X_t_pca = pca(X_t, n_comp, visual = True)
-
