@@ -5,6 +5,7 @@ from linear_r import LinearRegression
 from utils import accuracy
 from svm import SAGRegressor
 from ksvm import poly_kernel, gauss_kernel, SDCARegressor
+from rn import LeastSquareCriterion, MLP
 
 path = "./data/conso/conso_2015.csv"
 X_train, Y_train, X_val, Y_val, X_test, Y_test = retrieve_and_split(path)
@@ -107,3 +108,14 @@ sdca = SDCARegressor(gauss_kernel, param = 0.001, C = 1)
 sdca.fit(X_train_pca_2, Y_train, epochs = 10, Visual = False)
 Y_pred = sdca.predict(X_val_pca)
 accuracy(Y_pred, Y_val)
+
+# Testing handmade NN
+
+
+layers = [m, 64, 1]
+loss = LeastSquareCriterion()
+mlp = MLP(layers, loss, lamb=0, delta=0.000000000001)
+mlp.fit(X_train, Y_train, epochs=100, batch_size=512, Visual = True)
+Y_pred = mlp.predict(X_val)
+accuracy(Y_pred, Y_val)
+
