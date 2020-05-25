@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def gen_batchs(data, labels, batch_size):
-    """Créé des batchs de taille batch_size
+    """Crée des batchs de taille batch_size
     de data et labels"""
     assert(len(data) == len(labels))
     r = np.random.permutation(len(data))
@@ -100,34 +100,34 @@ class MLP(Module):
         self.delta = delta # learning rate
 
         self.n_layers = len(layers)
-       
+
         self.fc = [] # Fully connected layers
 
         for i in range(self.n_layers-1): # Couches cachées
             self.fc.append(Linear(layers[i], layers[i+1]))
-            
+
         self.n_fc = len(self.fc)
         self.relu = [ReLU() for _ in range(self.n_fc-1)]
-        
+
     def forward(self, x):
         for i in range(self.n_fc-1):
             x = self.fc[i].forward(x)
             x = self.relu[i].forward(x)
         x = self.fc[-1].forward(x)
         return x
-    
+
     def backward(self, x, gradient):
         for i in range(self.n_fc-1, 0, -1):
             gradient = self.fc[i].backward(self.relu[i-1].output, gradient)
             gradient = self.relu[i-1].backward(self.fc[i-1].output, gradient)
         gradient = self.fc[0].backward(x, gradient)
         return gradient
-    
+
     def gradientStep(self,lr,lamb):
         for i in range(self.n_fc-1, -1, -1):
-            self.fc[i].gradientStep(lr,lamb) 
+            self.fc[i].gradientStep(lr,lamb)
         return True
-    
+
     def fit(self, X, Y, epochs = 100, batch_size = 16, Visual = False):
         loss_values_train = []
         n_train = len(X)
@@ -142,7 +142,7 @@ class MLP(Module):
                 self.gradientStep(self.delta, self.lamb)
             if Visual: # Calcul de l'erreur quadratique moyenne pour les données d'entrainement et de validation
                 loss_values_train.append((1/n_train)*self.loss.forward(self.forward(X), Y))
-            
+
         if Visual:
             it = range(len(loss_values_train))
             plt.figure()
