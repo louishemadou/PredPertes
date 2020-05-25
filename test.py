@@ -7,9 +7,9 @@ from svm import SAGRegressor
 from ksvm import poly_kernel, gauss_kernel, SDCARegressor
 from rn import LeastSquareCriterion, MLP
 
-path = "./data/conso/conso_2015.csv"
-X_train, Y_train, X_val, Y_val, X_test, Y_test = retrieve_and_split(path)
-
+X_train, Y_train, X_val, Y_val, X_test, Y_test = retrieve_and_split(2017)
+print(X_train.shape)
+print(Y_train.shape)
 m = X_train.shape[1]
 print(str(m) + " features")
 
