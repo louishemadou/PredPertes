@@ -30,9 +30,8 @@ sns.heatmap(inner_corr, annot=True)
 plt.title("Pearson correlation between features")
 plt.show()
 
-# supprimer les "doublons" :
-# pour chaque feature, si une feature a une corrélation de plus de tant (voir avec la map), on en supprime une
+# supprimer les "doublons":
+# pour chaque feature, si une autre feature a une corrélation de plus de tant avec elle (voir avec la map), on en supprime une
 
 # garder les features les plus corrélées à Y
 # on choisit un nombre de feature ou un seuil de corrélation ?
-
