@@ -1,6 +1,21 @@
 import numpy as np
 import pandas as pd
 
+
+def retrieve_and_split(year):
+    """Retrieve and split data
+    into train/val/test datasets"""
+    size_1 = 0.70
+    size_2 = 0.85
+
+    path_X =  "./data/conso/conso_" + str(year) + ".csv"
+    path_Y =  "./data/pertes/pertes_" + str(year) + ".csv"
+    X = pd.read_csv(path_X).to_numpy()
+    Y = pd.read_csv(path_Y).to_numpy()[:, 3]
+    
+    return X, Y
+
+
 def retrieve_and_split(year):
     """Retrieve and split data
     into train/val/test datasets"""
