@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-def retrieve_and_split(year):
+def retrieve(year):
     """Retrieve data"""
     path_X =  "./data/conso/conso_" + str(year) + ".csv"
     path_Y =  "./data/pertes/pertes_" + str(year) + ".csv"
