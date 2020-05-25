@@ -111,7 +111,7 @@ error(Y_pred, Y_val)
 
 # Testing handmade NN
 
-
+print("Handmade NN")
 layers = [m, 64, 1]
 loss = LeastSquareCriterion()
 mlp = MLP(layers, loss, lamb=0, delta=0.000000000001)
