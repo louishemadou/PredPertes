@@ -1,6 +1,7 @@
 """Useful functions for algorithms"""
 
 import numpy as np
+import os
 from sklearn.metrics import r2_score
 
 def error(Y_pred, Y):
@@ -16,3 +17,8 @@ def add_ones(X):
     ones = np.ones(X.shape[0])
     ones.shape = (X.shape[0], 1)
     return np.concatenate((ones, X), axis=1)
+
+def path(name):
+    if os.name != 'posix':
+        return name.replace('/', '\\')
+    return name
