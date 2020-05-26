@@ -23,35 +23,38 @@ X_val_s = standardize(X_val)
 X_train_pca = pca(X_train_s, m, whitening = True, visual = False)
 X_val_pca = pca(X_val_s, m, whitening = True, visual = False)
 
-# Testing Linear_regression
+class Net():
+    def __init__(self, lr, input_dim, layers, activations):
+        self.lr = lr
+        self.model = keras.models.Sequential()
+        for i in range(len(layers)):
+            print(layers[i], activations[i])
+            if i!=0:
+                self.model.add(keras.layers.Dense(layers[i], activation=activations[i], input_dim=input_dim))
+            else:
+                self.model.add(keras.layers.Dense(layers[i], activation=activations[i]))
+        self.history = None
 
+    def fit(self, X, Y, epochs = 50, batch_size = 100, Visual = False):
+        SGD = keras.optimizers.SGD(learning_rate = self.lr)
+        self.model.compile(loss='mean_squared_error', optimizer=SGD, metrics=[keras.metrics.MeanSquaredError()])
+        self.history = self.model.fit(X, Y, epochs, batch_size)
+        if Visual: 
+            plt.plot(self.history.history['loss'])
+            plt.title('loss over epoch')
+            plt.ylabel('loss')
+            plt.xlabel('epoch')
+            plt.show()
 
-#Création du model (layers)
-model = keras.models.Sequential()
-model.add(keras.layers.Dense(400, activation='sigmoid', input_dim=m))
-model.add(keras.layers.Dense(400, activation='sigmoid'))
-model.add(keras.layers.Dense(100, activation='relu'))
-model.add(keras.layers.Dense(1, activation='linear'))
+    def predict(self, X):
+        return self.model.predict(X)
 
-# Optimizer
-
-SDG = keras.optimizers.SGD(learning_rate = 0.00001)
-
-# Compile model
-
-model.compile(loss='mean_squared_error', optimizer=SDG, metrics=[keras.metrics.MeanSquaredError()])
-
-# Fit the model
-history = model.fit(X_train_s, Y_train, epochs=50, batch_size=100)
-
-# summarize history for accuracy
-plt.plot(history.history['loss'])
-plt.title('loss over epoch')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.show()
-# calculate predictions
-Y_pred = model.predict(X_train_s)
-
-error(Y_pred, Y_train)
-compare(Y_val, Y_pred)
+layers = [400, 400, 100, 1]
+activations = ["sigmoid", "sigmoid", "relu", "linear"]
+input_dim = X_train_s[1]
+lr = 0.00001
+net = Net(lr, input_dim, layers, activations)
+net.fit(X_train_s, Y_train, epochs = 75, Visual = True)
+Y_pred = net.predict(X_val_s)
+error(Y_pred, Y_val)
+compare(Y_pred, Y_val)
