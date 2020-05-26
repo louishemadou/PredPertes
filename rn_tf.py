@@ -23,6 +23,7 @@ X_val_s = standardize(X_val)
 X_train_pca = pca(X_train_s, m, whitening = True, visual = False)
 X_val_pca = pca(X_val_s, m, whitening = True, visual = False)
 
+
 class Net():
     def __init__(self, lr, input_dim, layers, activations):
         self.lr = lr
@@ -51,7 +52,7 @@ class Net():
 
 layers = [400, 400, 100, 1]
 activations = ["sigmoid", "sigmoid", "relu", "linear"]
-input_dim = X_train_s[1]
+input_dim = X_train_s.shape[0]
 lr = 0.00001
 net = Net(lr, input_dim, layers, activations)
 net.fit(X_train_s, Y_train, epochs = 75, Visual = True)
