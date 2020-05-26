@@ -1,5 +1,5 @@
 from sklearn.metrics import r2_score
-from split import retrieve_and_split
+from split import retrieve_and_split, retrieve_all_and_split
 from pca import standardize, normalize, pca
 from linear_r import LinearRegression
 from utils import error
@@ -7,9 +7,7 @@ from svm import SAGRegressor
 from ksvm import poly_kernel, gauss_kernel, SDCARegressor
 from rn import LeastSquareCriterion, MLP
 
-X_train, Y_train, X_val, Y_val, X_test, Y_test = retrieve_and_split(2017)
-print(X_train.shape)
-print(Y_train.shape)
+X_train, Y_train, X_val, Y_val, X_test, Y_test = retrieve_all_and_split()
 m = X_train.shape[1]
 print(str(m) + " features")
 
@@ -29,8 +27,8 @@ X_val_pca = pca(X_val_s, m, whitening = True, visual = False)
 # With normalized data
 
 print("Linear regression with normalized data")
-LR = LinearRegression(lamb = 0.001, delta = 0.00002)
-LR.fit(X_train_n, Y_train, epochs = 100, Visual = True)
+LR = LinearRegression(lamb = 0.001, delta = 0.00001)
+LR.fit(X_train_n, Y_train, epochs = 20, Visual = True)
 Y_pred = LR.predict(X_val_n)
 error(Y_pred, Y_val)
 
@@ -39,7 +37,7 @@ error(Y_pred, Y_val)
 
 print("Linear regression with standardized data")
 LR = LinearRegression(lamb = 0.001, delta = 0.00001)
-LR.fit(X_train_s, Y_train, epochs = 100, Visual = True)
+LR.fit(X_train_s, Y_train, epochs = 20, Visual = True)
 Y_pred = LR.predict(X_val_s)
 error(Y_pred, Y_val)
 
@@ -47,8 +45,8 @@ error(Y_pred, Y_val)
 # With standardized and orthogonalized data
 
 print("Linear regression with standardized and orthogonalized data")
-LR = LinearRegression(lamb = 0.001, delta = 0.0001)
-LR.fit(X_train_pca, Y_train, epochs = 100, Visual = True)
+LR = LinearRegression(lamb = 0, delta = 0.0001)
+LR.fit(X_train_pca, Y_train, epochs = 20, Visual = True)
 Y_pred = LR.predict(X_val_pca)
 error(Y_pred, Y_val)
 
@@ -57,8 +55,8 @@ error(Y_pred, Y_val)
 # With normalized data
 
 print("SVM regression with normalized data")
-sag = SAGRegressor(lamb = 0.15, delta = 0.2)
-sag.fit(X_train_n, Y_train, epochs = 100, Visual = True)
+sag = SAGRegressor(lamb = 0.15, delta = 0.10)
+sag.fit(X_train_n, Y_train, epochs = 200, Visual = True)
 Y_pred = sag.predict(X_val_n)
 error(Y_pred, Y_val)
 
