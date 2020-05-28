@@ -97,8 +97,10 @@ De bons résultats en standardisant ou en normalisant les données :
 Passage au problème dual et introduction du kernel:
 
 $$
-\displaystyle \max_{\alpha \in \mathbb{R}^n} \frac{1}{n} \sum_{i=1}^{n} (\alpha_i y_i - \frac{\alpha_i^2}{4}) - \frac{1}{2 \lambda n^2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j K(x_i, x_j)
+\displaystyle \max_{\alpha \in \mathbb{R}^n} \frac{1}{n} \sum_{i=1}^{n} (\alpha_i y_i - \frac{\alpha_i^2}{4}) - \frac{1}{2 \lambda n^2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j \varphi(x_i) \cdot \varphi(x_j)
 $$
+
+On pose $K(x_i, x_j) = \varphi(x_i) \cdot \varphi(x_j)$
 
 Noyaux communément utilisés:
 
@@ -273,7 +275,7 @@ $$
 Résultats:
 
 * On fixe $\alpha$ = $5\%$.
-* Le test de Student élimine 23 variables explicatives.
+* Le test de Student élimine 12 variables explicatives.
 * Réseau de neurones avec données normalisées: $R^2$ = 0.86 $\rightarrow$ $R^2$ = 0.85.
 
 # Conclusion
