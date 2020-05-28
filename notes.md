@@ -55,8 +55,16 @@ pertes au même format que les données de consommation/production/échanges :
 * un fichier par an
 * une ligne par heure (colonnes jour/mois pour accès facile en observation)
 
-# Algorithmes de prédiction
+# Modèles de prédiction
+
+## Validation d'un modèle
+
+* Validation croisée pour éviter le sur-apprentissage.
+* Coefficient de détermination $R^2$ pour expliquer la proportion de variance des pertes expliquée par un modèle.
+* Entrainement des modèles avec des données normalisées, standardisées ou orthogonalisées.
+
 ## Régression linéaire
+
 Dépendance linéaire à déterminer :
 \begin{equation}
 f(x, \epsilon) = \beta_0 + \sum_{j=1}^p \beta_jx^j + \epsilon
@@ -64,41 +72,69 @@ f(x, \epsilon) = \beta_0 + \sum_{j=1}^p \beta_jx^j + \epsilon
 
 Résultats selon le pré-traitement des données :
 
-**traitement**  | **$R^2$**
----             | ---
-normalisées     | 0.80
-standardisées   | 0.83
-orthogonalisées | -1.9
+**traitement**    | **$R^2$**
+---               | ---
+normalisation     | 0.80
+standardisation   | 0.83
+orthogonalisation | -1.9
 
 ## Régression linéaire
-De bons résultats en standardisant les données :
+De bons résultats en standardisant ou en normalisant les données :
 \includegraphics[scale=.5]{figures/2017_st.png}
 <!-- ![](figures/2017_st.png) -->
 
-## Machine à noyaux
+## Machine à noyau
+
+Passage au problème dual et introduction du kernel:
+
+$$
+\displaystyle \max_{\alpha \in \mathbb{R}^n} \frac{1}{n} \sum_{i=1}^{n} (\alpha_i y_i - \frac{\alpha_i^2}{4}) - \frac{1}{2 \lambda n^2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j K(x_i, x_j)
+$$
+
+Noyaux communément utilisés:
+
+* Noyau gaussien: $K(x_i, x_j) = \exp{(-\frac{\left\Vert x_i-x_j\right\Vert ^2}{2 \sigma^2})}$
+* Noyau polynomial: $K(x_i, x_j) = (1 + x_i \cdot x_j)^q$
+
+## Machine à noyau
+
 Coefficient de détermination selon le prétraitement :
 
-**traitement**  | **$R^2$**
----             | ---
-normalisées     | 0.63
-standardisées   | 0.61
-orthogonalisées | -0.17
+**traitement**    | **$R^2$**
+---               | ---
+normalisation     | 0.63
+standardisation   | 0.61
+orthogonalisation | -0.17
 
 ## Machine à noyau
 Résultats avec la machine à noyau, données standardisées :
 \includegraphics[scale=.5]{figures/svr_2017.png}
 
 ## Réseau de neurones
-* utilisation de Tensorflow
-* structure du réseau :
+* Utilisation des bibliotheques Keras et Tensorflow
+* La complexité se trouvait dans la recherche d'une bonne architecture 
+* structure de réseau retenue:
 
 **neurones** | **activation**
 ---          | ---
-35           | (entrée)
 400          | sigmoïde
 400          | sigmoïde
 100          | ReLU
 1            | linéaire (sortie)
+
+## Réseau de neurones
+
+**traitement**    | **$R^2$**
+---               | ---
+normalisation     | 0.86
+standardisation   | 0.83
+orthogonalisation | 0.48
+
+## Réseau de neurones
+
+Résultats avec un réseau de neurones, données normalisées
+
+\includegraphics[scale=.5]{figures/RN_2017.png}
 
 # Sélection de variables
 ## Élimination des doublons
@@ -112,9 +148,6 @@ Coefficient de détermination selon le seuil d'élimination :
 seuil à $0.8 > 0.65$,
 supprimant `consommation`, `prevision_0`, `fioul`, `gaz`, `hydraulique`, `hydro_lacs`,
 `taux_co2`, 1.4% de perte
-
-## Élimination des doublons
-* Filtrage des doublons $0.5 < |\rho| < 0.9$, suppression d'une variable par doublon (la moins corrélée aux pertes).
 
 ## Sélection des variables explicatives
 La corrélation de Pearson ne suffit plus pour l'explication des pertes :
@@ -174,7 +207,6 @@ somme des corrélations par variable :
 ## PCA
 * La consommation a un maximum très élevé pour une somme faible :
 elle est presque à elle seule une composante principale
-* `heure`, `hydro_ecluses` et `solaire` sont importantes et réparties sur plusieurs composantes
 * `heure`, `solaire` et certains `echanges` disparaissent en restreignant le nombre de composantes.
 
 ## k Nearest Neighbors
