@@ -66,9 +66,17 @@ pertes au même format que les données de consommation/production/échanges :
 ## Régression linéaire
 
 Dépendance linéaire à déterminer :
-\begin{equation}
+
+$$
 f(x, \epsilon) = \beta_0 + \sum_{j=1}^p \beta_jx^j + \epsilon
-\end{equation}
+$$
+Problème d'optimisation à résoudre :
+
+$$
+\displaystyle \min_{\beta \in \mathbb{R}^{p+1}} \frac{1}{n}\sum_{i=1}^{n} (y_i - \widetilde{x}_i \beta)^2 + \lambda \left\Vert\beta \right\Vert_2
+$$
+
+## Régression linéaire
 
 Résultats selon le pré-traitement des données :
 
@@ -79,6 +87,7 @@ standardisation   | 0.83
 orthogonalisation | -1.9
 
 ## Régression linéaire
+
 De bons résultats en standardisant ou en normalisant les données :
 \includegraphics[scale=.5]{figures/2017_st.png}
 <!-- ![](figures/2017_st.png) -->
@@ -232,11 +241,40 @@ entraîné sur 10 époques et 100 observations.
 \includegraphics[scale=.5]{figures/poids.JPG}
 Les différences de poids peuvent être dues aux différences d'échelle
 
-## Test de student sur les poids
-* Hypothèse nulle pour chaque poids : il est nul (donc variable inutile)
-* Test à 5% : élimination de la moitié des variables (sans compter les doublons qui restent
+## Test de Student sur les poids
 
-à éliminer)
+$$
+f(x, \varepsilon) = \beta_0 + \displaystyle \sum_{j=1}^p \beta_j x^j + \varepsilon
+$$
+
+On suppose que les $\varepsilon_i$ sont indépendants et suivent une $\mathcal{N}(0, \sigma^2)$.
+
+Hypothèses nulle et alternative:
+
+$$
+H_0 = \{\beta_j = 0\}, H_1 = \{\beta_j \neq 0\}
+$$
+
+## Test de Student sur les poids
+
+Le test de Student consiste à rejeter $H_0$ si on a:
+
+$$
+\left|\frac{\hat{\beta_j}}{\sqrt{\hat{\sigma}^2 \rho_j}}\right| > t_{n-p-1, 1-\alpha/2}
+$$
+ 
+* $\rho_j$ est le j-ième coefficient diagonale de la matrice $(x^Tx)^{-1}$
+*  $t_{n-p-1, 1-\alpha/2}$ est le quantile d'ordre $1-\alpha/2$ d'une loi de student à n-p-1 degrés de liberté.
+* $\hat{\beta}$ et $\hat{\sigma}$ sont des estimateurs de $\beta$ et $\sigma$.
+* $\alpha$ quantifie le niveau du test (erreur de type I)
+
+## Test de Student sur les poids
+
+Résultats:
+
+* On fixe $\alpha$ = $5\%$.
+* Le test de Student élimine 23 variables explicatives.
+* Réseau de neurones avec données normalisées: $R^2$ = 0.86 $\rightarrow$ $R^2$ = 0.85.
 
 # Conclusion
 ## Difficultés
