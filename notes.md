@@ -246,7 +246,7 @@ Les différences de poids peuvent être dues aux différences d'échelle
 ## Test de Student sur les poids
 
 $$
-f(x, \varepsilon) = \beta_0 + \displaystyle \sum_{j=1}^p \beta_j x^j + \varepsilon
+f(x_i, \varepsilon_i) = \beta_0 + \displaystyle \sum_{j=1}^p \beta_j x_i^j + \varepsilon_i
 $$
 
 On suppose que les $\varepsilon_i$ sont indépendants et suivent une $\mathcal{N}(0, \sigma^2)$.
