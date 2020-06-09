@@ -11,6 +11,9 @@ def retrieve(year):
 
     return X, Y
 
+def retrieve_features():
+    """Return all features name"""
+    return pd.read_csv("./data/conso/conso_2015.csv").columns
 
 def retrieve_and_split(year):
     """Retrieve and split data
@@ -59,3 +62,16 @@ def retrieve_all_and_split():
     Y_test = pd.read_csv(path_test_Y).to_numpy()[:, 3]
 
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
+
+def sample_and_retrieve(n):
+    """returns n random samples
+    of all data"""
+    X_2016, Y_2016 = retrieve(2016)
+    X_2017, Y_2017 = retrieve(2017)
+    X_2018, Y_2018 = retrieve(2018)
+
+    X = np.concatenate((X_2016, X_2017, X_2018))
+    Y = np.concatenate((Y_2016, Y_2017, Y_2018))
+    r = np.random.permutation(len(Y))
+    return X[r[0:n],:], Y[r[0:n]]
+

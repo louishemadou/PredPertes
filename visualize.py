@@ -26,19 +26,39 @@ def influence(feature, year, month=0):
     plt.savefig(path(f"figures/{feature}_{year}_{month}.png"))
 
 
-def compare(reality, prediction, name=None):
+def compare(reality, prediction, year, name=None):
     """Compare reality and prediction, save with given file name
     (path and extension auto built).
     """
     plt.figure()
     real, pred = [d.reshape(-1, 24).sum(1) for d in (reality, prediction)]
-    plt.plot(real, 'g-', label='réalité')
-    plt.plot(pred, 'r-', label="prédiction")
-    plt.legend()
+    plt.plot(real, 'g-', label='pertes observées')
+    plt.plot(pred, 'r-', label="pertes prédites")
+    plt.title("Pertes électriques sur l'année " + str(year))
+    plt.xlabel("Jour")
+    plt.ylabel("Pertes éléctriques journalières en MWh")
+    plt.legend(loc="upper right")
     if name:
         plt.savefig(path(f"figures/{name}.png"))
     plt.show()
 
+
+def compare_nd(reality, prediction, day, n, name=None):
+    """Compare reality and prediction, save with given file name
+    (path and extension auto built).
+    """
+    plt.figure()
+    real = reality[day:day+n]
+    pred = prediction[day:day+n]
+    plt.plot(real, 'g-', label='pertes observées')
+    plt.plot(pred, 'r-', label="pertes prédites")
+    plt.title("Pertes électriques sur les jours " + str(day) + " jusqu'au jour " + str(day+n))
+    plt.xlabel("Heure")
+    plt.ylabel("Pertes éléctriques horaires en MWh")
+    plt.legend(loc="upper right")
+    if name:
+        plt.savefig(path(f"figures/{name}.png"))
+    plt.show()
 
 def main():
     """Pour générer facilement en ligne de commande."""
