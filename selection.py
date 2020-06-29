@@ -1,11 +1,10 @@
 from linear_r import LinearRegression
-from split import *
 from visualize import influence
-from pca import standardize
-from utils import add_ones
+from utils import *
 from scipy.stats import t
 import numpy as np
 import matplotlib.pyplot as plt
+
 X_2016, Y_2016 = retrieve(2016)
 X_2017, Y_2017 = retrieve(2017)
 X_2018, Y_2018 = retrieve(2018)
@@ -15,7 +14,7 @@ Y = np.concatenate((Y_2016, Y_2017, Y_2018))
 
 n, p = X.shape
 LR = LinearRegression(lamb=1000, delta=0.00000000000000005)
-LR.fit(X, Y, epochs=15, Visual=True)
+LR.fit(X, Y, epochs=100, Visual=True)
 Y_pred = LR.predict(X)
 
 w = LR.weights()
@@ -38,14 +37,13 @@ for i in range(p+1): # Formule du poly
 
 influe = []
 
-for i in range(p+1):
+for i in range(p+1): # Tests de Student
     print(w[i], labels[i])
     if i>0:
         influe.append(int(output[i][2]))
 
 Influence = [out[0] for out in output if out[2]]
 NInflience = [out[0] for out in output if not out[2]]
-print(influe)
 print("Variables ayant une influence: ", Influence)
 print(len(Influence))
 print("Variables n'ayant pas d'influence ", NInflience)
