@@ -1,5 +1,5 @@
-# pertes
-Projet de département IMI, prévisions de pertes sur un réseau de distribution d'électricité et sélection de variables pertinentes.
+# Projet de département IMI
+Prévisions de pertes sur un réseau de distribution d'électricité et sélection de variables pertinentes.
 
 On utilise plusieurs modèles:
 - Régression linéaire
