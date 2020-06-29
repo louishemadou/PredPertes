@@ -48,4 +48,3 @@ class LinearRegression():
     
     def weights(self):
         return self.beta
-
