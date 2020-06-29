@@ -8,4 +8,4 @@ On utilise plusieurs modèles:
 
 Exécuter predict.py avec python3 pour entrainer ces modèles.
 
-Exécuter selection.py pour visualiser les variables pertinentes.
+Exécuter selection.py avec python3 pour visualiser les variables pertinentes.
